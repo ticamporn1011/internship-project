@@ -1,0 +1,127 @@
+.list-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-button {
+    display: flex;
+    gap: 10px;
+}
+
+.list-group button {
+    border-radius: 5px;
+}
+
+.export-all {
+    background-color: #21a465;
+    border-color: #21a465;
+}
+
+.list-item-group {
+    display: flex;
+    align-items: center;
+}
+
+.list-search-item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1rem;
+    background: #ecf0f6;
+}
+
+input {
+    width: auto;
+}
+
+nz-table th,
+nz-table td p {
+    font-size: 12px;
+}
+
+nz-table td span {
+    font-size: 13px;
+}
+
+nz-table td img {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    font-size: calc(22.5px);
+}
+
+::ng-deep nz-pagination.ant-pagination.ant-table-pagination {
+    justify-content: flex-start;
+}
+
+::ng-deep .ant-drawer-body {
+    padding: 0 !important;
+}
+
+/* Modal */
+::ng-deep .ant-modal-content {
+    background-color: #F4F4F4 !important;
+}
+
+.head-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2rem;
+}
+
+.head-modal .anticon {
+    font-size: 22px;
+}
+
+.head-modal span {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.content-modal {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+}
+
+.content-modal section {
+    text-align: center;
+    background-color: #fff;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 0px;
+}
+
+section span:nth-child(2) {
+    font-size: 16px;
+}
+
+section span:nth-child(3) {
+    color: #000000b5;
+    font-size: 13px;
+}
+
+.ant-tag-checkable {
+    cursor: pointer;
+    color: #000000bf;
+    border-color: #0000004a;
+}
+
+.ant-tag-checkable-checked,
+.ant-tag-checkable:active {
+    color: #cf1322;
+    background: #fff1f0;
+    border-color: #ffa39e;
+}
+
+.ant-tag-checkable:not(.ant-tag-checkable-checked):hover {
+    color: #cf1322;
+    border-color: #ffa39e;
+}

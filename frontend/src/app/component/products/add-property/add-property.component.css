@@ -1,0 +1,301 @@
+::ng-deep .ant-drawer>* {
+    transition: transform .3s cubic-bezier(.7, .3, .1, 1), box-shadow .3s cubic-bezier(.7, .3, .1, 1) !important;
+}
+
+.header-add-prop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-add-prop span {
+    font-size: 20px;
+    font-weight: 500;
+    font-style: normal;
+    margin: 1rem 0 2rem;
+}
+
+nz-steps {
+    width: 50% !important;
+}
+
+::ng-deep .ant-steps-item-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: unset;
+    vertical-align: baseline;
+}
+
+::ng-deep .ant-steps-item-process>.ant-steps-item-container>.ant-steps-item-icon {
+    background: #B12629;
+}
+
+::ng-deep .ant-steps-item-process .ant-steps-item-icon {
+    background-color: #fff;
+    border-color: #B12629;
+}
+
+::ng-deep .ant-steps-item-finish>.ant-steps-item-container>.ant-steps-item-content>.ant-steps-item-title::after {
+    background-color: #f0f0f0;
+}
+
+::ng-deep .ant-steps-item-title {
+    font-size: 14px;
+}
+
+::ng-deep .ant-steps-item-content {
+    vertical-align: baseline;
+}
+
+::ng-deep .ant-drawer-body {
+    overflow: hidden !important;
+}
+
+::ng-deep .ant-table-body {
+    transition: opacity .3s !important;
+}
+
+.content-add-prop {
+    padding: 22px 10px;
+}
+
+nz-table th,
+nz-table td p {
+    font-size: 12px;
+}
+
+nz-table td span {
+    font-size: 13px;
+}
+
+nz-table td img {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    font-size: calc(22.5px);
+}
+
+.ant-table-tbody>tr,
+.ant-table-thead>tr {
+    transition: all .3s, height 0s;
+}
+
+.manage-group-product {
+    display: flex;
+}
+
+.manage-group-product section {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.manage-group-product section:first-child {
+    width: 140%;
+}
+
+.header-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 22px;
+}
+
+.header-item input {
+    padding: 4px 11px;
+    flex-grow: 2;
+    width: auto;
+    flex-grow: 1;
+}
+
+input,
+button,
+nz-tag {
+    border-radius: 4px;
+}
+
+::ng-deep nz-select-top-control {
+    border-radius: 4px !important;
+}
+
+.header-item nz-tag {
+    margin-right: 0;
+    margin-left: 6.5rem
+}
+
+.h-group {
+    display: flex;
+    align-items: baseline;
+    gap: 10rem;
+}
+
+.warning-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+    color: #00000040;
+}
+
+.list-part {
+    overflow-y: scroll;
+    max-height: calc(100vh - 298px);
+    padding: 5px;
+    border: 1px solid #aaaaaa38;
+    border-radius: 3px;
+}
+
+.body-table-group {
+    padding: 10px 0px 0px;
+}
+
+::ng-deep .ant-collapse>.ant-collapse-item>.ant-collapse-header {
+    align-items: center !important;
+}
+
+::ng-deep .head-table-group .ant-table-pagination.ant-pagination {
+    margin: 0 !important;
+}
+
+
+.btn-add-prop,
+.btn-remove-prop {
+    background: linear-gradient(45deg, #f1eae8 0, #f1eae8 100%);
+    color: #908484;
+    box-shadow: 0 0 0 rgba(177, 38, 41, 0);
+    border: 1px solid transparent;
+    padding: 2px 10px;
+    font-size: 14px;
+    height: 28px;
+}
+
+.btn-add-prop:hover {
+    background: linear-gradient(-45deg, #e63422 0, #f39c61 100%);
+    color: #f5eaea;
+    transition: .25s ease-in-out;
+}
+
+.btn-add-prop i,
+.btn-remove-prop i {
+    vertical-align: middle;
+}
+
+.btn-remove-prop:hover {
+    background: linear-gradient(-45deg, #b12629 0, #dc3545 100%);
+    color: #f5eaea;
+    transition: .25s ease-in-out;
+}
+
+.btn-add-prop:hover:disabled,
+.btn-add-prop:disabled {
+    background: #f1eae8;
+    color: #908484;
+    cursor: not-allowed;
+    opacity: .25;
+    box-shadow: 0 0 0 rgba(177, 38, 41, 0);
+}
+
+.btn-add-prop:not(:disabled):not(.disabled) {
+    cursor: pointer;
+}
+
+.table-content-td {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.create-group-btn {
+    position: absolute;
+    bottom: 88px;
+    right: 26px;
+
+}
+
+.head-group {
+    display: flex;
+    width: 45%;
+    gap: 1rem;
+    padding: 0px 1rem 22px;
+}
+
+.body-group {
+    display: flex;
+}
+
+.body-group section {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.body-group section:first-child {
+    width: 140%;
+}
+
+.card-header-add {
+    margin-bottom: 20px
+}
+
+.card-header-add span {
+    margin-right: 1.5rem;
+    font-weight: 600;
+    font-size: 16px
+}
+
+.card-content {
+    padding: 14px 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #d9d9d9;
+}
+
+.card-content p {
+    margin-right: 1.5rem;
+    font-weight: 600;
+    font-size: 16px
+}
+
+.card-content-enter {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    margin: 1.5rem 0px;
+}
+
+.card-content-enter span {
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.add-prop-sub-content {
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.20);
+    text-align: center;
+    padding: 3rem;
+
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 15px;
+    font-weight: 600;
+    transition: background 0.5s, color 0.25s;
+}
+
+.add-prop-sub-content:hover {
+    background: rgb(0 0 0 / 47%);
+    color: #fff;
+    cursor: pointer;
+}
+
+.footer-manage {
+    padding: 10px 0;
+}
+
+nz-pagination.ant-pagination.ng-star-inserted {
+    position: absolute;
+}
+
+.footer-sub {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

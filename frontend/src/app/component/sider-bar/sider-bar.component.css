@@ -1,0 +1,100 @@
+.side {
+    /* border: 1px solid rgb(85, 0, 255); */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    /* height: auto; */
+    /* width: 240px; */
+}
+
+.title-side-bar {
+    margin-left: 10px;
+}
+
+.manage {
+    width: 100%;
+    text-align: center;
+    margin: 1rem 0;
+    height: auto;
+}
+
+nz-radio-group>label {
+    box-shadow: -1px 0 0 0 #fff;
+    border-color: #fff;
+    background: #fff;
+    font-weight: 1000;
+
+    height: 24px;
+    padding: 0 7px;
+    line-height: 22px;
+}
+
+nz-radio-group[_ngcontent-wnv-c3] .ant-radio-button-wrapper-checked[_ngcontent-wnv-c3] {
+    box-shadow: -1px 0 0 0 #fff;
+    border-color: #fff;
+    background: #fff;
+    color: #00152e;
+    font-weight: 700;
+}
+
+.label1 {
+    border-radius: 4px 0 0 4px;
+}
+
+.label2 {
+    border-radius: 0 4px 4px 0;
+}
+
+.ant-radio-group-solid .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+    background: #424242;
+    border-color: #fff;
+}
+
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled)::before {
+    background-color: #fff;
+}
+
+[nz-menu] {
+    color: aliceblue;
+    background: #1a1a1a;
+}
+
+.scroll-tmt-nav {
+    overflow-y: auto;
+    height: calc(100vh - 160px);
+    max-width: 100% !important;
+    /* minheight เป็นตัวจัดการ collaps */
+    min-width: 240px !important;
+    width: 100% !important;
+}
+
+.scroll-tmt-nav::-webkit-scrollbar {
+    width: 5px !important;
+}
+
+.scroll-tmt-nav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .2);
+    border-radius: 5px !important;
+}
+
+li.ant-menu-item.ant-menu-item-selected {
+    background-color: #e85440 !important;
+    font-weight: 600;
+}
+
+.ant-menu-dark,
+.ant-menu-dark .ant-menu-sub {
+    color: rgba(255, 255, 255, .65);
+}
+
+.txt-white-45 {
+    color: rgba(255, 255, 255, .45) !important;
+    font-size: 12px;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding-top: 8px;
+}

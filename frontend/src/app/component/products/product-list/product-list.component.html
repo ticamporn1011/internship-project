@@ -1,0 +1,340 @@
+<div>
+  <nz-tabset>
+    <nz-tab nzTitle="Product">
+      <div class="list-container mb-2">
+        <span class="fs-4 fw-bold">Products</span>
+        <div class="list-group-button">
+          <div>
+            <button
+              nz-button
+              nzType="primary"
+              class="list-item-group export-all"
+            >
+              <span class="pe-2"><i class="fa-solid fa-file-excel"></i></span>
+              <span>Export All</span>
+            </button>
+          </div>
+          <div>
+            <button
+              class="list-item-group"
+              nz-button
+              nz-dropdown
+              [nzDropdownMenu]="menu1"
+            >
+              <span class="pe-2"> <i class="fa-solid fa-print"></i></span>
+              <span>พิมพ์</span>
+              <span nz-icon nzType="down"></span>
+            </button>
+            <nz-dropdown-menu #menu1="nzDropdownMenu">
+              <ul nz-menu>
+                <li>
+                  <span>กระดาษ A4 ทั่วไป</span>
+                </li>
+                <li nz-menu-item>
+                  <span nz-icon nzType="qrcode" nzTheme="outline"></span>
+                  คิวอาร์โค้ดขนาด 66*28 mm.
+                </li>
+                <li nz-menu-item>
+                  <span nz-icon nzType="barcode" nzTheme="outline"></span>
+                  บาร์โค้ดขนาด 66*28 mm.
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+          <div>
+            <button
+              class="list-item-group"
+              nz-button
+              nz-dropdown
+              [nzDropdownMenu]="menu2"
+            >
+              จัดการหลายรายการ
+              <span nz-icon nzType="down"></span>
+            </button>
+            <nz-dropdown-menu #menu2="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item>
+                  <span nz-icon nzType="folder" nzTheme="outline"></span>
+                  จัดการหลายรายการ
+                </li>
+                <li nz-menu-item>
+                  <span><i class="fa-regular fa-file-excel"></i></span>
+                  จัดการด้วย Excel
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+          </div>
+          <div>
+            <button
+              class="list-item-group"
+              nz-button
+              nz-dropdown
+              [nzDropdownMenu]="menu3"
+            >
+              เพิ่มคุณสมบัติสินค้า
+              <span nz-icon nzType="down"></span>
+            </button>
+            <nz-dropdown-menu #menu3="nzDropdownMenu">
+              <ul nz-menu>
+                <li
+                  nz-menu-item
+                  (click)="
+                    showModalAddProp = true;
+                    showModalUpdateProp = false;
+                    showModal()
+                  "
+                >
+                  เพิ่มคุณสมบัติสินค้า
+                </li>
+                <li
+                  nz-menu-item
+                  (click)="
+                    showModalUpdateProp = true;
+                    showModalAddProp = false;
+                    toggleModal()
+                  "
+                >
+                  อัพเดตคุณสมบัติสินค้า
+                </li>
+              </ul>
+            </nz-dropdown-menu>
+            <nz-modal
+              [(nzVisible)]="isVisible"
+              nzClosable="false"
+              (nzOnCancel)="handleCancel()"
+            >
+              <div *nzModalContent>
+                <div class="head-modal">
+                  <span *ngIf="showModalAddProp"> เพิ่มคุณสมบัติสินค้า </span>
+                  <span *ngIf="showModalUpdateProp">
+                    อัพเดตคุณสมบัติสินค้า
+                  </span>
+                  <span
+                    nz-icon
+                    nzType="question-circle"
+                    nzTheme="twotone"
+                    nzTwotoneColor="#FAAD14"
+                  ></span>
+                </div>
+                <div class="content-modal">
+                  <section>
+                    <nz-tag [nzColor]="'volcano'">WHITE</nz-tag>
+                    <span>ใช้งาน 1 คุณสมบัติ</span>
+                    <span *ngIf="showModalAddProp">
+                      ต้องการเพิ่ม 1 คุณสมบัติให้สินค้า
+                    </span>
+                    <span *ngIf="showModalUpdateProp">
+                      ต้องการอัพเดต 1 คุณสมบัติให้สินค้า
+                    </span>
+                    <nz-tag
+                      nzMode="checkable"
+                      [nzChecked]="oneProperty"
+                      (nzCheckedChange)="checkChangeOne($event)"
+                      >ใช้งาน 1 คุณสมบัติ</nz-tag
+                    >
+                  </section>
+                  <section>
+                    <nz-tag [nzColor]="'volcano'">WHITE-XL</nz-tag>
+                    <span>ใช้งาน 2 คุณสมบัติ</span>
+                    <span *ngIf="showModalAddProp">
+                      ต้องการเพิ่ม 2 คุณสมบัติให้สินค้า
+                    </span>
+                    <span *ngIf="showModalUpdateProp">
+                      ต้องการอัพเดต 2 คุณสมบัติให้สินค้า
+                    </span>
+                    <nz-tag
+                      nzMode="checkable"
+                      [nzChecked]="twoProperty"
+                      (nzCheckedChange)="checkChangeTwo($event)"
+                      >ใช้งาน 2 คุณสมบัติ</nz-tag
+                    >
+                  </section>
+                </div>
+              </div>
+              <div *nzModalFooter>
+                <button nz-button nzType="default" (click)="handleCancel()">
+                  ยกเลิก
+                </button>
+                <button
+                  nz-button
+                  nzType="primary"
+                  nzDanger
+                  (click)="handleOk()"
+                  [nzLoading]="isConfirmLoading"
+                  [disabled]="oneProperty === false && twoProperty === false"
+                >
+                  ตกลง
+                </button>
+              </div>
+            </nz-modal>
+            <nz-modal
+              [(nzVisible)]="isVisibleUpdateProp"
+              [nzContent]="modalContent"
+              [nzFooter]="null"
+              nzClosable="false"
+              (nzOnCancel)="handleCancel()"
+            >
+              <ng-template #modalContent>
+                <nz-result
+                  nzStatus="warning"
+                  nzTitle="ไม่พบสินค้าที่มีคุณสมบัติให้อัพเดต"
+                ></nz-result>
+              </ng-template>
+            </nz-modal>
+            <app-add-property
+              [visible]="isDrawerVisible"
+              [oneProperty]="oneProperty"
+              [twoProperty]="twoProperty"
+              [showModalAddProp]="showModalAddProp"
+              [showModalUpdateProp]="showModalUpdateProp"
+              (closeDrawer)="closeDrawer($event)"
+            ></app-add-property>
+          </div>
+          <div>
+            <button nz-button nzType="primary" nzDanger>
+              <span>เพิ่มสินค้า</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="list-search-item mb-3">
+        <div>
+          <span>ค้นหาจากภาษา</span>
+        </div>
+        <div>
+          <nz-select ngModel="TH">
+            <nz-option nzValue="TH" nzLabel="TH"></nz-option>
+          </nz-select>
+        </div>
+        <div>
+          <nz-select ngModel="ทุกสถานะ">
+            <nz-option nzValue="ทุกสถานะ" nzLabel="ทุกสถานะ"></nz-option>
+            <nz-option nzValue="ใช้งาน" nzLabel="ใช้งาน"></nz-option>
+            <nz-option nzValue="ไม่ใช้งาน" nzLabel="ไม่ใช้งาน"></nz-option>
+          </nz-select>
+        </div>
+        <div>
+          <input
+            nz-input
+            placeholder="ค้นหาชื่อสินค้า, SKU"
+            [(ngModel)]="searching"
+            (keydown.enter)="loadDataFromServer(searching)"
+          />
+        </div>
+        <div>
+          <nz-select
+            ngModel="หมวดหมู่ทั้งหมด"
+            nzAllowClear
+            nzPlaceHolder="หมวดหมู่ทั้งหมด"
+          >
+            <nz-option
+              nzValue="หมวดหมู่ทั้งหมด"
+              nzLabel="หมวดหมู่ทั้งหมด"
+            ></nz-option>
+            <nz-option nzValue="Uncategory" nzLabel="Uncategory"></nz-option>
+            <nz-option nzValue="Album" nzLabel="Album"></nz-option>
+          </nz-select>
+        </div>
+        <div>
+          <input nz-input placeholder="ค้นหากลุ่มสินค้า" />
+        </div>
+        <div>
+          <label nz-checkbox>แสดงเฉพาะสินค้าหมด</label>
+        </div>
+        <div>
+          <button nz-button nzType="default">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span>
+          </button>
+        </div>
+        <div>
+          <button nz-button nzType="default">
+            <span><i class="fa-solid fa-rotate-right"></i></span>
+          </button>
+        </div>
+      </div>
+      <div>
+        <nz-table
+          [nzData]="productLists"
+          [nzFrontPagination]="false"
+          [nzLoading]="loading"
+        >
+          <thead>
+            <tr>
+              <th nzWidth="70px">แนะนำ</th>
+              <th colSpan="2" nzWidth="30%" class="text-start">ชื่อสินค้า</th>
+              <th nzWidth="45%" class="text-center">
+                <button
+                  *ngIf="cancelAllbtn"
+                  nz-popconfirm
+                  nzPopconfirmTitle="ต้องการยกเลิกคุณสมบัติสินค้าทั้งหมดใช่หรือไม่"
+                  nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="confirmAll()"
+                  (nzOnCancel)="cancel()"
+                  nz-button
+                  nzSize="small"
+                  nzType="default"
+                  style="font-size: 12px; font-weight: 500"
+                >
+                  ยกเลิกคุณสมบัติทั้งหมด
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of productLists; let i = index">
+              <td>
+                <label nz-checkbox nzDisabled [ngModel]="false"></label>
+              </td>
+              <td class="d-flex">
+                <img src="assets/images/img-product.png" alt="img-product" />
+                <div class="ms-3 w-100">
+                  <span>{{ product.title }}</span>
+                  <p class="mb-0">SKU: {{ product.sku }}</p>
+                </div>
+              </td>
+              <td>
+                <nz-tag
+                  *ngIf="product.propValueMain || product.propValueSub"
+                  [nzColor]="'volcano'"
+                >
+                  {{ product.propValueMain }}{{ product.propValueSub }}
+                </nz-tag>
+              </td>
+              <td class="text-center">
+                <button
+                  *ngIf="product.propValueMain || product.propValueSub"
+                  nz-popconfirm
+                  nzPopconfirmTitle="ต้องการยกเลิกคุณสมบัติสินค้า SKU:
+                  {{ product.sku }} ใช่หรือไม่"
+                  nzPopconfirmPlacement="top"
+                  (nzOnConfirm)="confirmSingle(i)"
+                  (nzOnCancel)="cancel()"
+                  nz-button
+                  nzSize="small"
+                >
+                  <span nz-icon nzType="delete" nzTheme="fill"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+        <nz-pagination
+          nzShowSizeChanger
+          nzShowSizeChanger
+          [nzPageIndex]="pageIndex"
+          [nzTotal]="total"
+          [nzPageSize]="pageSize"
+          [nzShowTotal]="rangeTemplate"
+          (nzPageIndexChange)="handlePageIndexChange($event)"
+          (nzPageSizeChange)="handlePageSizeChange($event)"
+        ></nz-pagination>
+        <ng-template #rangeTemplate let-range="range" let-total>
+          {{ range[0] }}-{{ range[1] }} of {{ total }} items
+        </ng-template>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="Log file import">
+      <app-my-module></app-my-module>
+    </nz-tab>
+  </nz-tabset>
+</div>

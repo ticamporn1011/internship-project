@@ -1,0 +1,101 @@
+<div>
+  <div class="">
+    <input nz-input placeholder="Search name or sku" />
+    <input nz-input placeholder="Search group name" />
+  </div>
+  <div>
+    <div>
+      <div class="list-part">
+        <nz-table
+          [nzData]="productGroups"
+          [nzFrontPagination]="false"
+          [nzLoading]="loading"
+          nzSize="small"
+          class="head-table-group"
+        >
+          <thead>
+            <tr>
+              <th nzWidth="70px" class="text-center">
+                <span>รูปภาพ</span>
+              </th>
+              <th nzWidth="110px">
+                <span>ชื่อ</span>
+              </th>
+              <th>
+                <input
+                  nz-input
+                  nzSize="small"
+                  placeholder="Search Group Name"
+                />
+              </th>
+              <th nzWidth="70px">
+                <button nz-button nzType="default" nzSize="small">
+                  hide all
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </nz-table>
+
+        <div
+          *ngFor="let group of productGroups; let i = index"
+          class="body-table-group"
+        >
+          <ng-template #extraTpl>
+            <span style="margin-right: 5rem; color: #d9d9d9">
+              Count {{ group.group.length }}
+            </span>
+            <button
+              nz-button
+              nzType="default"
+              nzSize="small"
+              (click)="$event.stopPropagation()"
+            >
+              แก้ไข
+            </button>
+            <button
+              nz-button
+              nzType="default"
+              nzSize="small"
+              class="ms-2"
+              (click)="$event.stopPropagation(); "
+            >
+              ยกเลิกการจัดกลุ่ม
+            </button>
+          </ng-template>
+          <nz-collapse nzExpandIconPosition="right">
+            <nz-collapse-panel
+              [nzHeader]="group.groupName"
+              [nzExtra]="extraTpl"
+            >
+              <div *ngFor="let groupItem of group.group; let j = index">
+                <nz-table
+                  [nzData]="group.group"
+                  [nzShowPagination]="false"
+                  nzSize="small"
+                >
+                  <tbody>
+                    <tr>
+                      <td class="d-flex gap-3">
+                        <img
+                          src="assets/images/img-product.png"
+                          alt="img-product"
+                        />
+                        <div>
+                          <span>{{ groupItem.title }}</span>
+                          <p class="mb-0">{{ groupItem.sku }}</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+            </nz-collapse-panel>
+          </nz-collapse>
+        </div>
+      </div>
+    </div>
+    <div>เพิ่มคุณสมบัติสินค้า</div>
+  </div>
+</div>

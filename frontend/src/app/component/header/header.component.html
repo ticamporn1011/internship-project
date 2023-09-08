@@ -1,0 +1,80 @@
+<nz-header>
+  <div class="logo">
+    <img class="img-fluid" src="assets/logoket_shop.svg" alt="logo-tmt" />
+  </div>
+  <section>
+    <span
+      class="trigger"
+      nz-icon
+      [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+      (click)="toggleCollapsed()"
+    ></span>
+    <!-- <button nz-button nzType="primary" (click)="toggleCollapsed()">
+      <span
+        nz-icon
+        [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+      ></span>
+    </button> -->
+    <div>
+      <div class="menu-herder">
+        <div class="menu-herder-item">
+          <button nz-button nz-dropdown [nzDropdownMenu]="menu1">
+            <i class="fa-solid fa-language"></i>
+          </button>
+          <nz-dropdown-menu #menu1="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item>menu4 1st menu item</li>
+              <li nz-menu-item>menu4 2nd menu item</li>
+              <li nz-menu-item>menu4 3rd menu item</li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+        <div class="menu-herder-item">
+          <button nz-button class="d-flex align-items-center">
+            <span nz-icon nzType="read" nzTheme="outline"></span>
+            <span>คู่มือ</span>
+          </button>
+        </div>
+        <div class="menu-herder-item">
+          <button nz-button nz-dropdown [nzDropdownMenu]="menu2">
+            ส่วนเสริม
+            <span nz-icon nzType="down"></span>
+          </button>
+          <nz-dropdown-menu #menu2="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item>menu4 1st menu item</li>
+              <li nz-menu-item>menu4 2nd menu item</li>
+              <li nz-menu-item>menu4 3rd menu item</li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+        <div class="menu-herder-item px-3">
+          <i class="fa-solid fa-cart-shopping fs-5"></i>
+        </div>
+        <div class="menu-herder-item">
+          <button
+            nz-button
+            nz-dropdown
+            [nzDropdownMenu]="menu3"
+            class="d-flex justify-content-between align-items-center border-0"
+          >
+            <nz-avatar
+              [nzSize]="28"
+              style="background-color: #1890ff"
+              nzText="TC"
+            ></nz-avatar>
+            <span class="ms-2">Ticamporn</span>
+            <span nz-icon nzType="down"></span>
+          </button>
+          <nz-dropdown-menu #menu3="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item>menu4 1st menu item</li>
+              <li nz-menu-item>menu4 2nd menu item</li>
+              <li nz-menu-item>menu4 3rd menu item</li>
+            </ul>
+          </nz-dropdown-menu>
+        </div>
+      </div>
+    </div>
+  </section>
+</nz-header>

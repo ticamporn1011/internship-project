@@ -1,0 +1,654 @@
+<nz-drawer
+  [nzClosable]="false"
+  [nzVisible]="visible"
+  [nzTitle]="drawerHeader"
+  [nzFooter]="drawerFooter"
+  (nzOnClose)="close()"
+  nzWidth="90%"
+  nzPlacement="right"
+>
+  <ng-template #drawerHeader>
+    <div class="header-add-prop">
+      <span *ngIf="showModalAddProp">การเพิ่มคุณสมบัติสินค้า</span>
+      <span *ngIf="showModalUpdateProp">การอัพเดตคุณสมบัติสินค้า</span>
+
+      <!-- <ng-template [ngIf]="showModalAddProp">
+        {{ "showModalAddProp = " + showModalAddProp }}
+      </ng-template>
+      <ng-template [ngIf]="showModalUpdateProp">
+        {{ "showModalUpdateProp = " + showModalUpdateProp }}
+      </ng-template>
+      <ng-template [ngIf]="oneProperty">
+        {{ "oneProperty = " + oneProperty }}
+      </ng-template>
+      <ng-template [ngIf]="twoProperty">
+        {{ "twoProperty = " + twoProperty }}
+      </ng-template> -->
+
+      <nz-steps [nzCurrent]="current">
+        <nz-step
+          [nzStatus]="current == 0 ? 'process' : 'wait'"
+          nzTitle="การจัดกลุ่มสินค้า"
+        ></nz-step>
+        <nz-step
+          [nzStatus]="current !== 0 ? 'process' : 'wait'"
+          nzTitle="การจัดการคุณสมบัติสินค้า"
+        ></nz-step>
+      </nz-steps>
+    </div>
+  </ng-template>
+
+  <ng-container *nzDrawerContent>
+    <div class="content-add-prop">
+      <div *ngIf="current === 0" class="manage-group-product">
+        <section>
+          <div class="header-item">
+            <input
+              nz-input
+              placeholder="Search name or sku"
+              [(ngModel)]="searching"
+              (keydown.enter)="search(searching)"
+            />
+            <nz-select ngModel="ทุกสถานะ">
+              <nz-option nzValue="ทุกสถานะ" nzLabel="ทุกสถานะ"></nz-option>
+              <nz-option nzValue="บางสถานะ" nzLabel="บางสถานะ"></nz-option>
+            </nz-select>
+            <nz-select ngModel="ทุกหมวดหมู่">
+              <nz-option
+                nzValue="ทุกหมวดหมู่"
+                nzLabel="ทุกหมวดหมู่"
+              ></nz-option>
+              <nz-option
+                nzValue="บางหมวดหมู่"
+                nzLabel="บางหมวดหมู่"
+              ></nz-option>
+            </nz-select>
+            <label nz-checkbox [(ngModel)]="checked"
+              >แสดงเฉพาะสินค้าทั้งหมด</label
+            >
+          </div>
+          <div class="list-part">
+            <nz-table
+              [nzData]="productLists"
+              [nzFrontPagination]="false"
+              [nzLoading]="loading"
+              nzSize="small"
+            >
+              <thead>
+                <tr>
+                  <th nzWidth="50px">
+                    <span>แนะนำ</span>
+                  </th>
+                  <th nzWidth="10px">
+                    <span>สถานะ</span>
+                  </th>
+                  <th colSpan="2" class="text-start">
+                    <span>สินค้า</span>
+                  </th>
+                  <th class="text-center">
+                    <label
+                      nz-checkbox
+                      [(ngModel)]="selectAll"
+                      (ngModelChange)="toggleSelectAll(selectAll)"
+                    ></label>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productLists; let i = index">
+                  <td class="ps-3">
+                    <label
+                      nz-checkbox
+                      nzDisabled="true"
+                      class="text-center"
+                    ></label>
+                  </td>
+                  <td>
+                    <nz-tag [nzColor]="'#52c41a'">เปิด</nz-tag>
+                  </td>
+                  <td width="30px">
+                    <img
+                      src="assets/images/img-product.png"
+                      alt="img-product"
+                    />
+                  </td>
+                  <td width="100%">
+                    <div>
+                      <span>{{ product.title }}</span>
+                      <div
+                        class="d-flex justify-content-between align-items-end"
+                      >
+                        <p class="mb-0">SKU: {{ product.sku }}</p>
+                        <nz-tag
+                          *ngIf="product.propValueMain || product.propValueSub"
+                          [nzColor]="'volcano'"
+                        >
+                          {{ product.propValueMain }}{{ product.propValueSub }}
+                        </nz-tag>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-center">
+                    <button
+                      nz-button
+                      class="btn-add-prop"
+                      (click)="selectProduct(i)"
+                      [disabled]="product.btnDisable"
+                    >
+                      <i class="fas fa-exchange-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </section>
+        <section>
+          <div class="header-item">
+            <button
+              nz-button
+              [nzType]="temRef1 ? 'primary' : 'default'"
+              [nzDanger]="temRef1"
+              (click)="manageGroup()"
+            >
+              จัดกลุ่มสินค้า
+            </button>
+            <nz-badge [nzCount]="productGroups.length" nzShowZero>
+              <button
+                nz-button
+                [nzType]="temRef2 ? 'primary' : 'default'"
+                [nzDanger]="temRef2"
+                (click)="showGroups()"
+              >
+                แสดงกลุ่มสินค้าทั้งหมด
+              </button>
+            </nz-badge>
+            <nz-tag *ngIf="oneProperty" [nzColor]="'volcano'">
+              ใช้งาน 1 คุณสมบัติ
+            </nz-tag>
+            <nz-tag *ngIf="twoProperty" [nzColor]="'volcano'">
+              ใช้งาน 2 คุณสมบัติ
+            </nz-tag>
+          </div>
+          <ng-template [ngIf]="temRef1">
+            <div class="select-part">
+              <nz-table
+                [nzData]="productSelects.length > 0 ? [1] : []"
+                [nzFrontPagination]="false"
+                [nzLoading]="loading"
+                [nzScroll]="{ y: '330px' }"
+                nzSize="small"
+              >
+                <thead>
+                  <tr>
+                    <th nzWidth="70px" class="text-center">
+                      <span>รูปภาพ</span>
+                    </th>
+                    <th colSpan="2" class="text-start">
+                      <span>ชื่อ</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th class="text-center">
+                      <span>ชื่อกลุ่ม</span>
+                    </th>
+                    <th colSpan="2">
+                      <input
+                        nz-input
+                        nzSize="small"
+                        disabled="true"
+                        placeholder="Auto Generate Group Names"
+                        [value]="nameGroup"
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let select of productSelects; let i = index">
+                    <td class="text-center">
+                      <img
+                        src="assets/images/img-product.png"
+                        alt="img-product"
+                      />
+                    </td>
+                    <td colspan="6">
+                      <span>{{ select.title }}</span>
+                      <div
+                        class="d-flex justify-content-between align-items-lg-baseline"
+                      >
+                        <p class="mb-0">SKU: {{ select.sku }}</p>
+                        <nz-tag
+                          *ngIf="select.propValueMain || select.propValueSub"
+                          [nzColor]="'volcano'"
+                        >
+                          {{ select.propValueMain }}{{ select.propValueSub }}
+                        </nz-tag>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <button class="btn-remove-prop" (click)="deleteSelect(i)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+              <div
+                *ngIf="productGroups.length > 0 && productSelects.length == 0"
+                class="warning-select"
+              >
+                <span
+                  nz-icon
+                  nzType="exclamation-circle"
+                  nzTheme="outline"
+                ></span>
+                <span>ดูกลุ่มสินค้าที่ "แสดงกลุ่มสินค้าทั้งหมด"</span>
+              </div>
+            </div>
+            <div class="create-group-btn">
+              <button
+                *ngIf="productSelects.length > 0"
+                nz-button
+                nzType="default"
+                (click)="createGroup()"
+              >
+                สร้างกลุ่ม
+              </button>
+            </div>
+          </ng-template>
+
+          <ng-template [ngIf]="temRef2">
+            <div class="list-part">
+              <nz-table
+                [nzData]="productGroups"
+                [nzFrontPagination]="false"
+                [nzLoading]="loading"
+                nzSize="small"
+                class="head-table-group"
+              >
+                <thead>
+                  <tr>
+                    <th nzWidth="70px" class="text-center">
+                      <span>รูปภาพ</span>
+                    </th>
+                    <th nzWidth="110px">
+                      <span>ชื่อ</span>
+                    </th>
+                    <th>
+                      <input
+                        nz-input
+                        nzSize="small"
+                        placeholder="Search Group Name"
+                        #searchGroupS
+                        (keydown.enter)="searchNameGroupsS(searchGroupS.value)"
+                      />
+                    </th>
+                    <th nzWidth="70px">
+                      <button
+                        nz-button
+                        nzType="default"
+                        nzSize="small"
+                        (click)="toggleHideAll1()"
+                      >
+                        hide all
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </nz-table>
+
+              <div
+                *ngFor="let group of productGroups; let i = index"
+                class="body-table-group"
+              >
+                <ng-template #extraTpl>
+                  <span style="margin-right: 5rem; color: #d9d9d9">
+                    Count {{ group.group.length }}
+                  </span>
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzSize="small"
+                    (click)="
+                      $event.stopPropagation(); onEditItemGroup(group.id, i)
+                    "
+                  >
+                    แก้ไข
+                  </button>
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzSize="small"
+                    class="ms-2"
+                    (click)="$event.stopPropagation(); cancelGroup(group.id, i)"
+                  >
+                    ยกเลิกการจัดกลุ่ม
+                  </button>
+                </ng-template>
+                <!-- ค้นหาชื่อกลุ่มฝั่ง productSelects -->
+                <nz-collapse
+                  *ngIf="searchGroupName(group.groupName, searchGroup1)"
+                  nzExpandIconPosition="right"
+                >
+                  <nz-collapse-panel
+                    [nzHeader]="group.groupName"
+                    [nzExtra]="extraTpl"
+                    [nzActive]="!activeCollaps1"
+                  >
+                    <div *ngFor="let groupItem of group.group; let j = index">
+                      <nz-table
+                        [nzData]="group.group"
+                        [nzShowPagination]="false"
+                        [nzLoading]="loading"
+                        nzSize="small"
+                      >
+                        <tbody>
+                          <tr>
+                            <td class="d-flex gap-3">
+                              <img
+                                src="assets/images/img-product.png"
+                                alt="img-product"
+                              />
+                              <div>
+                                <span>{{ groupItem.title }}</span>
+                                <p class="mb-0">SKU: {{ groupItem.sku }}</p>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </nz-table>
+                    </div>
+                  </nz-collapse-panel>
+                </nz-collapse>
+              </div>
+            </div>
+          </ng-template>
+        </section>
+      </div>
+      <div *ngIf="current > 0" class="manage-prop-product">
+        <div class="head-group">
+          <input
+            nz-input
+            placeholder="Search name or sku"
+            #searchMemberG
+            (keydown.enter)="searchMemberGroup(searchMemberG.value)"
+          />
+          <input
+            nz-input
+            placeholder="Search group name"
+            #searchGroupG
+            (keydown.enter)="searchNameGroupsG(searchGroupG.value)"
+          />
+        </div>
+        <div class="body-group">
+          <section>
+            <div class="list-part">
+              <nz-table
+                [nzData]="productGroups"
+                [nzFrontPagination]="false"
+                [nzLoading]="loading"
+                nzSize="small"
+                class="head-table-group"
+              >
+                <thead>
+                  <tr>
+                    <th nzWidth="110px">
+                      <span>เลือก</span>
+                    </th>
+                    <th>
+                      <span>ชื่อสินค้า</span>
+                    </th>
+                    <th class="text-end">
+                      <button
+                        *ngIf="namePropMain || namePropSub"
+                        nz-button
+                        nzType="default"
+                        nzSize="small"
+                        disabled="true"
+                      >
+                        {{ namePropMain }}{{ namePropSub }}
+                      </button>
+                    </th>
+                    <th nzWidth="60px">
+                      <span>default</span>
+                    </th>
+                    <th nzWidth="70px">
+                      <button
+                        nz-button
+                        nzType="default"
+                        nzSize="small"
+                        (click)="toggleHideAll2()"
+                      >
+                        hide all
+                      </button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </nz-table>
+              <div
+                *ngFor="let group of productGroups; let i = index"
+                class="body-table-group"
+              >
+                <ng-template #extraTpl>
+                  <button
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    nzSize="small"
+                    (click)="$event.stopPropagation(); checkedAll(group.id, i)"
+                  >
+                    เลือกทั้งหมด
+                  </button>
+                  <span style="margin: 0 10px">
+                    {{ group.groupName }}
+                  </span>
+                  <span style="margin-right: 5rem; color: #d9d9d9">
+                    Count {{ group.group.length }}
+                  </span>
+                </ng-template>
+                <nz-collapse
+                  *ngIf="searchGroupName(group.groupName, searchGroup2)"
+                  nzExpandIconPosition="right"
+                >
+                  <nz-collapse-panel
+                    [nzHeader]="extraTpl"
+                    [nzActive]="activeCollaps2"
+                  >
+                    <div *ngFor="let groupItem of group.group; let j = index">
+                      <div *ngIf="searchMemberItem(groupItem)">
+                        <nz-table
+                          [nzData]="group.group"
+                          [nzShowPagination]="false"
+                          [nzLoading]="loading"
+                          nzSize="small"
+                        >
+                          <tbody>
+                            <tr>
+                              <td class="table-content-td">
+                                <label
+                                  nz-checkbox
+                                  [(ngModel)]="groupItem.checked"
+                                  (ngModelChange)="checkSingle(groupItem, i)"
+                                ></label>
+                                <img
+                                  src="assets/images/img-product.png"
+                                  alt="img-product"
+                                />
+                                <div>
+                                  <span>{{ groupItem.title }}</span>
+                                  <p class="mb-0">{{ groupItem.sku }}</p>
+                                </div>
+                              </td>
+                              <td class="text-end w-50">
+                                <nz-tag
+                                  *ngIf="groupItem.propValueMain"
+                                  [nzColor]="'volcano'"
+                                >
+                                  <span>
+                                    {{ groupItem.propValueMain
+                                    }}{{ groupItem.propValueSub }}
+                                  </span>
+                                </nz-tag>
+                              </td>
+                              <td style="width: 115px">
+                                <nz-switch
+                                  nzSize="small"
+                                  [(ngModel)]="switchValue"
+                                ></nz-switch>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </nz-table>
+                      </div>
+                    </div>
+                  </nz-collapse-panel>
+                </nz-collapse>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div class="card-header-add">
+              <span *ngIf="showModalAddProp">เพิ่มคุณสมบัติสินค้า</span>
+              <span *ngIf="showModalUpdateProp">อัพเดตสมบัติสินค้า</span>
+              <nz-tag *ngIf="oneProperty" [nzColor]="'volcano'">
+                ใช้งาน 1 คุณสมบัติ
+              </nz-tag>
+              <nz-tag *ngIf="twoProperty" [nzColor]="'volcano'">
+                ใช้งาน 2 คุณสมบัติ
+              </nz-tag>
+            </div>
+            <div class="card-content">
+              <p>คุณสมบัติหลัก</p>
+              <div class="card-content-enter">
+                <div>
+                  <span>ชื่อคุณสมบัติหลัก</span>
+                  <input
+                    nz-input
+                    placeholder="size,color"
+                    [(ngModel)]="nameMain"
+                    [disabled]="disanbleNameMain"
+                  />
+                </div>
+                <div>
+                  <span>ค่าของคุณสมบัติหลัก</span>
+                  <input
+                    nz-input
+                    placeholder="enter option value"
+                    [(ngModel)]="valueMain"
+                  />
+                </div>
+                <button
+                  *ngIf="showModalAddProp"
+                  nz-button
+                  nzType="primary"
+                  nzDanger
+                  (click)="onUpdateMain(nameMain, valueMain)"
+                  [disabled]="nameMain == '' || valueMain == ''"
+                >
+                  OK
+                </button>
+                <button
+                  *ngIf="showModalUpdateProp"
+                  nz-button
+                  nzType="primary"
+                  nzDanger
+                  (click)="onUpdateMain(nameMain, valueMain)"
+                >
+                  OK
+                </button>
+              </div>
+            </div>
+            <div *ngIf="twoProperty">
+              <div class="card-content">
+                <p>คุณสมบัติรอง</p>
+                <div class="card-content-enter">
+                  <div>
+                    <span style="font-size: 15px">ชื่อคุณสมบัติรอง</span>
+                    <input
+                      nz-input
+                      placeholder="size,color"
+                      [(ngModel)]="nameSub"
+                      [disabled]="disanbleNameSub"
+                    />
+                  </div>
+                  <div>
+                    <span>ค่าของคุณสมบัติรอง</span>
+                    <input
+                      nz-input
+                      placeholder="enter option value"
+                      [(ngModel)]="valueSub"
+                    />
+                  </div>
+                  <button
+                    *ngIf="showModalAddProp"
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    (click)="onUpdateSub(nameSub, valueSub)"
+                    [disabled]="nameSub == '' || valueSub == ''"
+                  >
+                    OK
+                  </button>
+                  <button
+                    *ngIf="showModalUpdateProp"
+                    nz-button
+                    nzType="primary"
+                    nzDanger
+                    (click)="onUpdateSub(nameSub, valueSub)"
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #drawerFooter>
+    <div class="footer-manage">
+      <nz-pagination
+        *ngIf="current == 0"
+        nzShowSizeChanger
+        [nzPageIndex]="pageIndex"
+        [nzTotal]="total"
+        [nzPageSize]="pageSize"
+        [nzShowTotal]="rangeTemplate"
+        (nzPageIndexChange)="handlePageIndexChange($event)"
+        (nzPageSizeChange)="handlePageSizeChange($event)"
+      ></nz-pagination>
+      <ng-template #rangeTemplate let-range="range" let-total>
+        {{ range[0] }}-{{ range[1] }} of {{ total }} items
+      </ng-template>
+
+      <div class="footer-sub">
+        <button *ngIf="current > 0" nz-button nzType="default" (click)="pre()">
+          <span>กลับ</span>
+        </button>
+        <button
+          *ngIf="current < 1"
+          [disabled]="productGroups.length < 1 ? true : false"
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="next()"
+        >
+          หน้าถัดไป
+        </button>
+        <button
+          *ngIf="current === 1"
+          nz-button
+          nzType="primary"
+          nzDanger
+          (click)="submitData()"
+        >
+          <span>บันทึก</span>
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</nz-drawer>
